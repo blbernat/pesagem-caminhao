@@ -56,10 +56,33 @@ está estabilizada.
 2. Rodar o comando `docker compose -f docker-compose-mysql.yml up` (caso queira acompanhar os logs) ou `docker compose -f docker-compose-mysql.yml up -d`
 3. Iniciar a aplicação manualmente ou via IDE
 
+## Descrição da arquitetura
+### Padrão MVC 
+
+#### Model
+Contém as entidades, DTOs e mapeamentos do banco. Representa os dados e regras básicas de validação.
+#### Repository
+Responsável por toda comunicação com o MySQL, utilizando Spring Data JPA ou JDBC Template. Neste projeto foi utilizado o JDBC.
+#### Service
+Centraliza as regras de negócio, como por exemplo os cálculos de tara, peso líquido e custo; estabilização de pesagem e validações das transações
+#### Controller
+Ela é responsável por mapear endpoints (REST), validar a entrada do usuário, acionar métodos da camada Service e retornar respostas padronizadas (ProblemDetail, DTOs, ResponseEntity)
+
+### Banco de Dados – MySQL
+O MySQL armazena todas as informações do sistema, incluindo caminhões, tipos de grão, filiais, balanças e transações de pesagem.
+A conexão usa variáveis de ambiente via Docker Compose.
+
+### Execução com Docker
+A aplicação roda totalmente em containers Docker:
+
+- App (Spring Boot): construído via Dockerfile com multi-stage build para gerar o JAR e executar na porta 8080.
+- MySQL: subido como container separado, com volume persistente para armazenar os dados.
+- Docker-compose: orquestra os serviços e garante que o Spring Boot só inicie após o MySQL estar disponível.
+
 ## Documentação da API (Swagger)
 - Após iniciar o projeto, acesse a documentação Swagger em: http://localhost:8080/swagger-ui/index.html
 
-## Collections Postman
+## Testes com Collections do Postman
 
 Para verificar se a aplicação está rodando corretamente e ter acesso aos endpoints, utilize as Collections no Postman, conforme os seguintes passos:
 1. Salve num arquivo local o conteúdo do arquivo `collections`
@@ -68,11 +91,10 @@ Para verificar se a aplicação está rodando corretamente e ter acesso aos endp
 4. Cada endpoint possui testes válidos e inválidos que já estão prontos para serem executados!
 
 ## Sugestão de melhoria
-- Campo 'tara' na tabela de transação para que seja feita novamente a pesagem do caminhão vazio. Dessa forma é garantido o cálculo correto do peso líquido (combustivel, desgaste, pneu)
 - Fazer o controle de versionamento. Este pode ser visualizado pela documentação no Swagger. Para melhor entendimento, leia o exemplo: https://dzone.com/articles/versioning-rest-api-with-spring-boot-and-swagger
 - Testes unitários
-- Deploy em nuvem / outro banco de dados
-- Fazer tratamento de exception específicos (`ControllerExceptionHandler`)
+- Deploy em nuvem
+- Fazer tratamentos de exception específicos (`ControllerExceptionHandler`)
 
 ## Como Contribuir
 Contribuições são sempre bem-vindas! Veja como:
