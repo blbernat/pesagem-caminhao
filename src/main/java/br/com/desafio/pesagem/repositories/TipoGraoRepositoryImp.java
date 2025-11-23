@@ -24,7 +24,7 @@ public class TipoGraoRepositoryImp implements TipoGraoRepository{
 
     @Override
     public Optional<TipoGrao> findByName(String nome) {
-        return this.jdbc.sql("SELECT max(id) FROM tipo_grao where lower(nome) LIKE :nome")
+        return this.jdbc.sql("SELECT * FROM tipo_grao where lower(nome) LIKE :nome")
                 .param("nome", nome)
                 .query(TipoGrao.class)
                 .optional();
@@ -32,7 +32,7 @@ public class TipoGraoRepositoryImp implements TipoGraoRepository{
 
     @Override
     public Optional<TipoGrao> findById(Long id) {
-        return this.jdbc.sql("SELECT max(id) FROM tipo_grao where id = :id")
+        return this.jdbc.sql("SELECT * FROM tipo_grao where id = :id")
                 .param("id", id)
                 .query(TipoGrao.class)
                 .optional();

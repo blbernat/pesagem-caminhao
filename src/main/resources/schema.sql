@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS transacao_transporte (
     caminhao_id BIGINT NOT NULL,
     tipo_grao_id BIGINT NOT NULL,
     balanca_id BIGINT NOT NULL,
+    filial_id BIGINT NOT NULL,
 
     peso_bruto DECIMAL(10,2),
     tara DECIMAL(10,2),
@@ -38,5 +39,6 @@ CREATE TABLE IF NOT EXISTS transacao_transporte (
 
     FOREIGN KEY (caminhao_id) REFERENCES caminhao(id),
     FOREIGN KEY (tipo_grao_id) REFERENCES tipo_grao(id),
-    FOREIGN KEY (balanca_id) REFERENCES balanca(id)
+    FOREIGN KEY (balanca_id) REFERENCES balanca(id),
+    FOREIGN KEY (filial_id) REFERENCES filial(id)
 );

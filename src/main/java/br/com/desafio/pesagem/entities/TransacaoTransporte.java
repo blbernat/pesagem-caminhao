@@ -16,6 +16,7 @@ public class TransacaoTransporte {
     private Caminhao caminhao;
     private TipoGrao tipoGrao;
     private Balanca balanca;
+    private Filial filial;
 
     private Double pesoBruto;
     private Double tara;

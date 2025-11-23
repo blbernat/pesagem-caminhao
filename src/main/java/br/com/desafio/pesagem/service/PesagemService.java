@@ -98,7 +98,7 @@ public class PesagemService {
         double pesoBruto = dto.weight();
         double pesoLiquido = pesoBruto- tara;
         double custo = pesoLiquido * tipoGrao.getPrecoTon();
-        TransacaoDTO transacaoDTO = new TransacaoDTO(caminhao, tipoGrao, balanca, pesoBruto, pesoLiquido, custo, dto.inicio());
+        TransacaoDTO transacaoDTO = new TransacaoDTO(caminhao, tipoGrao, balanca, balanca.getFilial(), pesoBruto, pesoLiquido, custo, dto.inicio());
         Integer save = transacaoRepo.save(transacaoDTO);
         if (save != 1) {
             throw new RuntimeException("Houve um erro ao criar transação!");

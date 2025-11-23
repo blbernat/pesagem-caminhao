@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface BalancaRepository {
     Optional<Balanca> findByCodigoHardware(String idBalanca);
-    Optional<Filial> findFilial(String nomeFilial);
     Optional<Balanca> findByFilial(Long idFilial);
     Optional<Balanca> findById(Long id);
-
 }
