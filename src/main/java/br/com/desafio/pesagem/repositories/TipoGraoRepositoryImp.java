@@ -29,4 +29,12 @@ public class TipoGraoRepositoryImp implements TipoGraoRepository{
                 .query(TipoGrao.class)
                 .optional();
     }
+
+    @Override
+    public Optional<TipoGrao> findById(Long id) {
+        return this.jdbc.sql("SELECT max(id) FROM tipo_grao where id = :id")
+                .param("id", id)
+                .query(TipoGrao.class)
+                .optional();
+    }
 }

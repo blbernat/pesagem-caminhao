@@ -8,4 +8,5 @@ public interface TipoGraoRepository {
 
     Optional<TipoGrao> findAny();
     Optional<TipoGrao> findByName(String nome);
+    Optional<TipoGrao> findById(Long id);
 }

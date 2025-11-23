@@ -31,11 +31,30 @@ descreva uma estratégia para identificar automaticamente o momento em que a bal
 está estabilizada.
 
 ## Como Configurar
+### Pré-requisitos
+- Java JDK 24
+- Maven
+- MySQL
+- Docker
+- Postman
+
+### Instalação
 1. Clone o repositório: `git clone https://github.com/blbernat/desafio-tecnico-backend.git`
 2. Instale as dependências e rodar o projeto com o docker, conforme passo a passo do próximo tópico:
 3. Iniciar a aplicação manualmente via IDE rodando a classe main do Java `TransporteApplication`
 4. Acesse a aplicação em: http://localhost:8080/
 5. Acesse o banco de dados da aplicação em: http://localhost:8080/ com usuário e senha definidos no arquivo `application.properties`
+
+### Docker
+* #### Para utilizar a aplicação via docker é necessário gerar o `.jar` da aplicação. Para isso faça os seguintes passos:
+1. Acessar o diretório `desafio-tecnico-backend/docker`
+2. Rodar o comando `docker-compose up` (caso queira acompanhar os logs) ou `docker-compose up -d`
+3. A aplicação estará rodando na porta http://localhost:8080
+
+* ####  Caso queira rodar a aplicação local e utilizar o banco via docker:
+1. Acessar o diretório `desafio-tecnico-backend/docker`
+2. Rodar o comando `docker compose -f docker-compose-mysql.yml up` (caso queira acompanhar os logs) ou `docker compose -f docker-compose-mysql.yml up -d`
+3. Iniciar a aplicação manualmente ou via IDE
 
 ## Documentação da API (Swagger)
 - Após iniciar o projeto, acesse a documentação Swagger em: http://localhost:8080/swagger-ui/index.html

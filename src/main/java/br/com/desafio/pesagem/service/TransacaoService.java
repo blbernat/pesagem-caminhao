@@ -1,6 +1,5 @@
 package br.com.desafio.pesagem.service;
 
-import br.com.desafio.pesagem.dto.TransacaoDTO;
 import br.com.desafio.pesagem.entities.*;
 import br.com.desafio.pesagem.repositories.BalancaRepository;
 import br.com.desafio.pesagem.repositories.CaminhaoRepository;
@@ -9,7 +8,6 @@ import br.com.desafio.pesagem.repositories.TransacaoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TransacaoService {
@@ -25,19 +23,29 @@ public class TransacaoService {
         this.tipoGraoRepo = tipoGraoRepo;
     }
 
-    public Optional<TransacaoTransporte> findTransacao(String nomeFilial, String placaCaminhao, String nomeGrao) {
-        Caminhao caminhao = caminhaoRepo.findByPlate(placaCaminhao)
-                .orElseThrow(()-> new IllegalStateException("Caminhão não cadastrado: " + placaCaminhao));
+    public List<TransacaoTransporte> findTransacao(String nomeFilial, String placaCaminhao, String nomeGrao) {
+        Caminhao caminhao = new Caminhao();
+        Filial filial = new Filial();
+        Balanca balanca = new Balanca();
+        TipoGrao tipoGrao = new TipoGrao();
 
-        Filial filial = balancaRepo.findFilial(nomeFilial)
-                .orElseThrow(()-> new IllegalStateException("Filial não cadastrada: " + nomeFilial));
+        if (placaCaminhao != null) {
+            caminhao = caminhaoRepo.findByPlate(placaCaminhao)
+                    .orElseThrow(()-> new IllegalStateException("Caminhão não cadastrado: " + placaCaminhao));
+        }
+        if (nomeFilial != null) {
+            filial = balancaRepo.findFilial(nomeFilial)
+                    .orElseThrow(()-> new IllegalStateException("Filial não cadastrada: " + nomeFilial));
 
-        Balanca balanca = balancaRepo.findByFilial(filial.getId())
-                .orElseThrow(()-> new IllegalStateException("Balanças da filial não encontrada"));
-
-        // aqui se busca o primeiro tipo de grão cadastrado
-        TipoGrao tipoGrao = tipoGraoRepo.findByName(nomeGrao)
-                .orElseThrow(()-> new IllegalStateException("Tipo de grão não cadastrado: " + nomeGrao));
+            if (filial.getId() != null) {
+                balanca = balancaRepo.findByFilial(filial.getId())
+                        .orElseThrow(()-> new IllegalStateException("Balanças da filial não encontrada"));
+            }
+        }
+        if (nomeGrao != null) {
+            tipoGrao = tipoGraoRepo.findByName(nomeGrao)
+                    .orElseThrow(()-> new IllegalStateException("Tipo de grão não cadastrado: " + nomeGrao));
+        }
 
         return this.transacaoRepo.findTransacao(balanca.getId(), caminhao.getId(), tipoGrao.getId());
     }

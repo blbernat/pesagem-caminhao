@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -44,10 +45,10 @@ public class PesagemController {
             description = "Busca transações cadastradas. Pode-se buscar todas ou por filial, caminhão e tipo de grão. Retorna uma lista de JSON. Exemplo (todos): http://localhost:8080/v1/pesagens. Exemplo (com filtro): http://localhost:8080/v1/pesagens?caminhao=ABC1D23",
             responses = { @ApiResponse(description = "Ok", responseCode = "200")})
     @GetMapping
-    public ResponseEntity<Optional<TransacaoTransporte>> findTransacao (@RequestParam(value = "filial", required = false) String filial,
+    public ResponseEntity<List<TransacaoTransporte>> findTransacao (@RequestParam(value = "filial", required = false) String filial,
                                                                         @RequestParam(value = "caminhao", required = false) String caminhao,
                                                                         @RequestParam(value = "tipoGrao", required = false) String tipoGrao) {
-        Optional<TransacaoTransporte> trasacao = this.transacaoService.findTransacao(filial, caminhao, tipoGrao);
-        return ResponseEntity.ok(trasacao);
+        List<TransacaoTransporte> transacao = this.transacaoService.findTransacao(filial, caminhao, tipoGrao);
+        return ResponseEntity.ok(transacao);
     }
 }

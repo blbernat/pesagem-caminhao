@@ -5,15 +5,22 @@ import br.com.desafio.pesagem.entities.TransacaoTransporte;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class TransacaoRepositoryImp implements TransacaoRepository {
 
     private final JdbcClient jdbcClient;
-    public TransacaoRepositoryImp(JdbcClient jdbcClient) {
+    private final CaminhaoRepository caminhaoRepo;
+    private final BalancaRepository balancaRepo;
+    private final TipoGraoRepository tipoGraoRepo;
+
+    public TransacaoRepositoryImp(JdbcClient jdbcClient, CaminhaoRepository caminhaoRepo, BalancaRepository balancaRepo, TipoGraoRepository tipoGraoRepo) {
         this.jdbcClient = jdbcClient;
+        this.caminhaoRepo = caminhaoRepo;
+        this.balancaRepo = balancaRepo;
+        this.tipoGraoRepo = tipoGraoRepo;
     }
 
     @Override
@@ -28,12 +35,12 @@ public class TransacaoRepositoryImp implements TransacaoRepository {
                 .param("peso_liquido", t.pesoLiquido())
                 .param("custo_carga", t.custoCarga())
                 .param("inicio", t.inicio())
-                .param("fim", LocalDate.now())
+                .param("fim", LocalDateTime.now())
                 .update();
     }
 
     @Override
-    public Optional<TransacaoTransporte> findTransacao(Long balandaId, Long caminhaoId, Long tipoGraoId) {
+    public List<TransacaoTransporte> findTransacao(Long balandaId, Long caminhaoId, Long tipoGraoId) {
         JdbcClient.StatementSpec statement;
         var sql = new StringBuilder("SELECT * FROM transacao_transporte");
         sql.append(" WHERE 1=1 ");
@@ -60,6 +67,6 @@ public class TransacaoRepositoryImp implements TransacaoRepository {
             statement.param("tipoGraoId", tipoGraoId);
         }
 
-        return statement.query(TransacaoTransporte.class).optional();
+        return statement.query(new TransacaoRowMapper(caminhaoRepo, balancaRepo, tipoGraoRepo)).list();
     }
 }
