@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "cf8e429a-0e0f-4d8c-9706-ef91ffe26a2d",
+		"name": "Desafio Transporte de grãos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49308963",
+		"_collection_link": "https://blbernat-3353651.postman.co/workspace/Brenda's-Workspace~db25d338-4d77-4f10-8afd-35e56a5475c1/collection/49308963-cf8e429a-0e0f-4d8c-9706-ef91ffe26a2d?action=share&source=collection_link&creator=49308963"
+	},
+	"item": [
+		{
+			"name": "POST pesagem",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\": \"BAL001\",\r\n\"plate\": \"ABC1D23\",\r\n\"weight\": 8500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pesagens",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pesagens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET findTransacao  - caminhao",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"nome\": \"Brenda\",\r\n\"email\": \"brenda@fiap.com\",\r\n\"login\": \"blbernat\",\r\n\"senha\": \"password\",\r\n\"endereco\": {\r\n\"rua\": \"Rua 2 de Setembro\",\r\n\"numero\": 12345,\r\n            \"cidade\": \"Blumenau\",\r\n            \"cep\": 89055555\r\n        },\r\n        \"tipoUsuario\": \"USUARIO\"\r\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pesagens?caminhao=ABC1D23",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pesagens"
+					],
+					"query": [
+						{
+							"key": "caminhao",
+							"value": "ABC1D23"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET findTransacao  - todas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pesagens",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pesagens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET findCusto - matriz",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pesagens/custo?entidade=filial&nome=filial matriz",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pesagens",
+						"custo"
+					],
+					"query": [
+						{
+							"key": "entidade",
+							"value": "filial"
+						},
+						{
+							"key": "nome",
+							"value": "filial matriz"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET findCusto - grao",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pesagens/custo?entidade=grao&nome=soja",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pesagens",
+						"custo"
+					],
+					"query": [
+						{
+							"key": "entidade",
+							"value": "grao"
+						},
+						{
+							"key": "nome",
+							"value": "soja"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

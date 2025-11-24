@@ -18,6 +18,7 @@ public record TransacaoDTO(@NotBlank(message = "É obrigatório informar o camin
                            Filial filial,
                            @NotBlank(message = "É obrigatório informar o peso bruto informado na pesagem!")
                            BigDecimal pesoBruto,
+                           BigDecimal tara,
                            BigDecimal pesoLiquido,
                            BigDecimal custoCarga,
                            LocalDateTime inicio) {

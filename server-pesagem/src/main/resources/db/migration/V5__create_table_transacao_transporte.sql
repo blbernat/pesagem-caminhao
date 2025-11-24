@@ -27,5 +27,14 @@ INSERT INTO transacao_transporte (
     '2025-11-22 18:45:05.123', '2025-11-22 18:48:08.351'
 );
 
+INSERT INTO transacao_transporte (
+    id, caminhao_id, tipo_grao_id, balanca_id, filial_id,
+    peso_bruto, tara, peso_liquido, custo_carga, inicio, fim
+) VALUES (
+    2, 2, 1, 1, 1,
+    9500.0, 6500.0, 3000.0, 297863,
+    '2025-11-24 09:17:45.123', '2025-11-24 9:18:08.351'
+);
+
 -- Reset sequence
 SELECT setval('transacao_transporte_id_seq', (SELECT MAX(id) FROM transacao_transporte));

@@ -28,13 +28,14 @@ public class TransacaoRepositoryImp implements TransacaoRepository {
     @Override
     public Integer save(TransacaoDTO t) {
         return this.jdbcClient.sql("INSERT INTO transacao_transporte " +
-                " (caminhao_id, tipo_grao_id, balanca_id, filial_id, peso_bruto, peso_liquido, custo_carga, inicio, fim) " +
-                " values(:caminhao_id, :tipo_grao_id, :balanca_id, :filial_id, :peso_bruto, :peso_liquido, :custo_carga, :inicio, :fim)")
+                " (caminhao_id, tipo_grao_id, balanca_id, filial_id, peso_bruto, tara, peso_liquido, custo_carga, inicio, fim) " +
+                " values(:caminhao_id, :tipo_grao_id, :balanca_id, :filial_id, :peso_bruto, :tara, :peso_liquido, :custo_carga, :inicio, :fim)")
                 .param("caminhao_id", t.caminhao().getId())
                 .param("tipo_grao_id",t.tipoGrao().getId())
                 .param("balanca_id", t.balanca().getId())
                 .param("filial_id", t.filial().getId())
                 .param("peso_bruto", t.pesoBruto())
+                .param("tara", t.tara())
                 .param("peso_liquido", t.pesoLiquido())
                 .param("custo_carga", t.custoCarga())
                 .param("inicio", t.inicio())
@@ -74,7 +75,7 @@ public class TransacaoRepositoryImp implements TransacaoRepository {
     }
 
     @Override
-    public List<TransacaoDTO> findCusto(String entidade, Long idEntidade) {
+    public List<TransacaoTransporte> findCusto(String entidade, Long idEntidade) {
         var sql = new StringBuilder("SELECT * FROM transacao_transporte");
         sql.append(" WHERE 1=1 ");
 
@@ -90,7 +91,7 @@ public class TransacaoRepositoryImp implements TransacaoRepository {
 
         return this.jdbcClient.sql(sql.toString())
                 .param("idEntidade", idEntidade)
-                .query(TransacaoDTO.class)
+                .query(new TransacaoRowMapper(caminhaoRepo, balancaRepo, tipoGraoRepo, filialRepo))
                 .list();
     }
 }

@@ -42,7 +42,7 @@ public class PesagemController {
     @Operation(
             summary = "Busca as transações cadastradas",
             description = "Busca transações cadastradas. Pode-se buscar todas ou por filial, caminhão e tipo de grão. Retorna uma lista de JSON. Exemplo (todos): http://localhost:8080/v1/pesagens. Exemplo (com filtro): http://localhost:8080/v1/pesagens?caminhao=ABC1D23",
-            responses = { @ApiResponse(description = "Ok", responseCode = "200")})
+            responses = { @ApiResponse(description = "Ok", responseCode = "200"), @ApiResponse(description = "Not found", responseCode = "404")})
     @GetMapping
     public ResponseEntity<List<TransacaoTransporte>> findTransacao (@RequestParam(value = "filial", required = false) String filial,
                                                                     @RequestParam(value = "caminhao", required = false) String caminhao,

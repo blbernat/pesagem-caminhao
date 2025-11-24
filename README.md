@@ -52,13 +52,13 @@ pesagem-caminhao/
 **Pré-requisito:** Docker Desktop rodando
 
 ```bash
-cd weigh-hub
+cd server-pesagem
 ./gradlew bootRun
 ```
 
 Ou no Windows:
 ```cmd
-cd weigh-hub
+cd server-pesagem
 gradlew.bat bootRun
 ```
 
@@ -68,38 +68,81 @@ Ao iniciar, a API fica disponível por padrão em http://localhost:8080 (verifiq
 ### Build:
 
 ```bash
-cd weigh-hub
+cd server-pesagem
 ./gradlew build
 ```
 
 ### Endpoints
+**Registrar Pesagem:**
+```http
+POST http://localhost:8080/api/v1/pesagens
+Content-Type: application/json
 
-descrever endpoint !!
+{
+    "id": "BAL001",
+    "plate": "ABC1D34",
+    "weight": 7000.0
+}
+```
+
+**Listar todas as pesagens:**
+```http
+GET http://localhost:8080/api/v1/pesagens
+```
+
+**Buscar pesagem por filial, caminhão ou tipo de grão:**
+```http
+GET http://localhost:8080/api/v1/pesagens?filial=filial matriz
+GET http://localhost:8080/api/v1/pesagens?caminhao=ABC1D23
+GET http://localhost:8080/api/v1/pesagens?grao=soja
+```
+
+**Buscar custo por filial, caminhão ou tipo de grão:**
+```http
+GET http://localhost:8080/api/v1/pesagens/custo?filial=filial matriz
+GET http://localhost:8080/api/v1/pesagens/custo?caminhao=ABC1D23
+GET http://localhost:8080/api/v1/pesagens/custo?grao=soja
+```
 
 ### Executar o Simulador da Balança:
 ```bash
-cd duo-weigh
+cd client-pesagem-balanca
 ./gradlew run
 ```
 
 Ou no Windows:
 ```cmd
-cd duo-weigh
+cd client-pesagem-balanca
 gradlew.bat run
 ```
 
 ### Criar JAR executável:
 
 ```bash
-cd duo-weigh
+cd client-pesagem-balanca
 ./gradlew fatJar
 ```
 
-JAR criado em: `build/libs/duo-weigh-1.0.0-all.jar`
+JAR criado em: `build/libs/client-pesagem-balanca-1.0.0-all.jar`
 
 Executar:
 ```bash
-java -jar build/libs/duo-weigh-1.0.0-all.jar
+java -jar build/libs/client-pesagem-balanca-1.0.0-all.jar
+```
+
+### Lógica do simulador
+- `SimuladorBalanca` inicia com um `currentWeight` aleatório entre 70% e 130% do `targetWeight`.
+- A cada 500 ms (`MainController` agenda leituras a cada 500 ms), `simulateNextReading()` calcula um ajuste na diferença entre peso atual e alvo, aplicando um fator aleatório entre 0.3 e 0.7 para reduzir essa diferença, e adiciona um ruído aleatório (variável `VARIATION_FACTOR`).
+- Se o `currentWeight` estiver dentro de 1% do `targetWeight` por `STABILIZATION_THRESHOLD` leituras consecutivas (atualmente 3), a leitura é marcada como estabilizada.
+- Ao detectar estabilização, o `MainController` envia um JSON ao servidor via `BalancaClient` com os campos `id`, `plate` e `weight`, para o endpoint `POST /api/v1/pesagens`.
+
+#### Formato enviado
+```json
+{
+	"id": "BAL001",
+	"plate": "ABC1D23",
+	"weight": 7000.00
+}
 ```
 
 ## Build de todos os projetos
@@ -123,11 +166,11 @@ gradlew.bat build
 # 1. Garantir que o Docker está rodando
 
 # 2. Terminal 1: Execute o server-pesagem (servidor)
-cd weigh-hub
+cd server-pesagem
 ./gradlew bootRun
 
 # 3. Terminal 2: Execute o client-pesagem_balanca (simulador EPS32)
-cd duo-weigh
+cd client-pesagem-balanca
 ./gradlew run
 ```
 
@@ -137,13 +180,13 @@ Preencha os campos na interface e clique em "Iniciar Pesagem"!
 
 ```bash
 # 1. Execute o Weigh Hub
-cd weigh-hub
+cd server-pesagem
 ./gradlew bootRun
 
 # 2. Teste a API
-curl -X POST http://localhost:8080/api/v1/weighing/records \
+curl -X POST http://localhost:8080/api/v1/pesagens \
   -H "Content-Type: application/json" \
-  -d '{"scaleId":"Balance_1","plate":"ABC1D34","weight":15000}'
+  -d '{"id":"BAL001","plate":"ABC1D34","weight":7000}'
 ```
 
 ## API e documentação
@@ -167,6 +210,9 @@ Utilize o Collections do Postman para verificar os endpoints da aplicação (arq
 - Utilizar o conceito de Arquitetura em Camadas (application, domain e infrastructure) para melhor organização e separação de código.
 - Fazer tratamentos de exception específicos (`ControllerExceptionHandler`). 
 - Cobrir mais regras de negócio e tratamento de erros.
+- Criar mais endpoints de CRUD para as entidades (adicionar balança, deletar caminhão, visualizar filiais)
+- Criar endpoints de lucro.
+- Corrigir o retorno do método GET de busca de transações para retornar um DTO, e não uma entidaed.
 
-##Licença
+## Licença
 Projeto distribuído sob licença MIT (ver arquivo `LICENSE` se presente).

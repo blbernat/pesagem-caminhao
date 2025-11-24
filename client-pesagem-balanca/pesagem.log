@@ -210,3 +210,5 @@ Caused by: java.net.SocketException: Socket closed
 2025-11-24 01:02:28.027 [Thread-8] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T04:02:28.008+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
 2025-11-24 01:10:41.287 [Thread-3] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: id=BAL001, plate=ABC1D23, weight=14970.91
 2025-11-24 01:11:07.433 [Thread-3] INFO  c.d.balanca.service.BalancaClient - Successfully sent weighing record. Response: 
+2025-11-24 10:57:39.192 [Thread-3] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: id=BAL001, plate=ABC1D23, weight=15024.85
+2025-11-24 10:57:39.277 [Thread-3] INFO  c.d.balanca.service.BalancaClient - Successfully sent weighing record. Response: 

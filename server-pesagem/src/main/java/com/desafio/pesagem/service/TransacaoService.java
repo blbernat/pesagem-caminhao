@@ -1,9 +1,9 @@
 package com.desafio.pesagem.service;
 
 import com.desafio.pesagem.dto.CustoDTO;
-import com.desafio.pesagem.dto.TransacaoDTO;
 import com.desafio.pesagem.entities.*;
 import com.desafio.pesagem.repositories.*;
+import com.desafio.pesagem.service.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,15 +30,15 @@ public class TransacaoService {
 
         if (placaCaminhao != null) {
             caminhao = caminhaoRepo.findByPlate(placaCaminhao)
-                    .orElseThrow(()-> new IllegalStateException("Caminhão não cadastrado: " + placaCaminhao));
+                    .orElseThrow(()-> new ResourceNotFoundException("Caminhão não cadastrado: " + placaCaminhao));
         }
         if (nomeFilial != null) {
             filial = filialRepo.findByName(nomeFilial)
-                    .orElseThrow(()-> new IllegalStateException("Filial não cadastrada: " + nomeFilial));
+                    .orElseThrow(()-> new ResourceNotFoundException("Filial não cadastrada: " + nomeFilial));
         }
         if (nomeGrao != null) {
             tipoGrao = tipoGraoRepo.findByName(nomeGrao)
-                    .orElseThrow(()-> new IllegalStateException("Tipo de grão não cadastrado: " + nomeGrao));
+                    .orElseThrow(()-> new ResourceNotFoundException("Tipo de grão não cadastrado: " + nomeGrao));
         }
 
         return this.transacaoRepo.findTransacao(filial.getId(), caminhao.getId(), tipoGrao.getId());
@@ -52,33 +52,33 @@ public class TransacaoService {
         Long idEntidade = 0L;
         if ("filial".equalsIgnoreCase(entidade)) {
             filial = filialRepo.findByName(nome)
-                    .orElseThrow(()-> new IllegalStateException("Filial não encontrada: " + nome));
+                    .orElseThrow(()-> new ResourceNotFoundException("Filial não encontrada: " + nome));
 
             idEntidade = filial.getId();
         }
         if ("caminhao".equalsIgnoreCase(entidade)) {
             caminhao = caminhaoRepo.findByPlate(nome)
-                    .orElseThrow(()-> new IllegalStateException("Caminhão não encontrado: " + nome));
+                    .orElseThrow(()-> new ResourceNotFoundException("Caminhão não encontrado: " + nome));
 
             idEntidade = caminhao.getId();
         }
         if ("grao".equalsIgnoreCase(entidade)) {
             tipoGrao = tipoGraoRepo.findByName(nome)
-                    .orElseThrow(()-> new IllegalStateException("Tipo de grão não encontrado: " + nome));
+                    .orElseThrow(()-> new ResourceNotFoundException("Tipo de grão não encontrado: " + nome));
 
             idEntidade = tipoGrao.getId();
         }
 
-        List<TransacaoDTO> transacoes = this.transacaoRepo.findCusto(entidade, idEntidade);
+        List<TransacaoTransporte> transacoes = this.transacaoRepo.findCusto(entidade, idEntidade);
 
         return this.calcularValorCusto(transacoes, entidade, nome);
     }
 
-    public CustoDTO calcularValorCusto(List<TransacaoDTO> transacoes, String entidade, String nome) {
+    public CustoDTO calcularValorCusto(List<TransacaoTransporte> transacoes, String entidade, String nome) {
         BigDecimal valor = BigDecimal.ZERO;
 
-        for (TransacaoDTO t : transacoes) {
-            valor = valor.add(t.custoCarga());
+        for (TransacaoTransporte t : transacoes) {
+            valor = valor.add(t.getCustoCarga());
         }
 
         return new CustoDTO(entidade, nome, valor);

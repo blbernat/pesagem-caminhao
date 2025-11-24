@@ -9,6 +9,8 @@ import com.desafio.pesagem.repositories.BalancaRepository;
 import com.desafio.pesagem.repositories.CaminhaoRepository;
 import com.desafio.pesagem.repositories.TipoGraoRepository;
 import com.desafio.pesagem.repositories.TransacaoRepository;
+import com.desafio.pesagem.service.exception.CreateTransactionException;
+import com.desafio.pesagem.service.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,23 +35,23 @@ public class PesagemService {
 
     public void salvarPesagemEstabilizada(LeituraPesagemDTO dto) {
         Caminhao caminhao = caminhaoRepo.findByPlate(dto.plate())
-                .orElseThrow(()-> new IllegalStateException("Caminhão não cadastrado: " + dto.plate()));
+                .orElseThrow(()-> new ResourceNotFoundException("Caminhão não cadastrado: " + dto.plate()));
 
         Balanca balanca = balancaRepo.findByCodigoHardware(dto.idBalanca())
-                .orElseThrow(()-> new IllegalStateException("Balança não cadastrada: " + dto.idBalanca()));
+                .orElseThrow(()-> new ResourceNotFoundException("Balança não cadastrada: " + dto.idBalanca()));
 
         // aqui se busca o primeiro tipo de grão cadastrado
         TipoGrao tipoGrao = tipoGraoRepo.findAny()
-                .orElseThrow(()-> new IllegalStateException("Tipo de grão não cadastrado"));
+                .orElseThrow(()-> new ResourceNotFoundException("Tipo de grão não cadastrado"));
 
         BigDecimal tara = caminhao.getTara();
         BigDecimal pesoBruto = dto.weight();
         BigDecimal pesoLiquido = pesoBruto.subtract(tara);
         BigDecimal custo = pesoLiquido.multiply(tipoGrao.getPrecoTon());
-        TransacaoDTO transacaoDTO = new TransacaoDTO(caminhao, tipoGrao, balanca, balanca.getFilial(), pesoBruto, pesoLiquido, custo, dto.inicio());
+        TransacaoDTO transacaoDTO = new TransacaoDTO(caminhao, tipoGrao, balanca, balanca.getFilial(), pesoBruto, tara, pesoLiquido, custo, dto.inicio());
         Integer save = transacaoRepo.save(transacaoDTO);
         if (save != 1) {
-            throw new RuntimeException("Houve um erro ao criar transação!");
+            throw new CreateTransactionException("Houve um erro ao criar transação!");
         }
     }
 }

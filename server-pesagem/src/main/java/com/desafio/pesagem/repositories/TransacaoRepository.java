@@ -9,5 +9,5 @@ public interface TransacaoRepository {
 
     Integer save(TransacaoDTO transacaoTransporte);
     List<TransacaoTransporte> findTransacao(Long filialId, Long caminhaoId, Long tipoGraoId);
-    List<TransacaoDTO> findCusto(String entidade, Long idEntidade);
+    List<TransacaoTransporte> findCusto(String entidade, Long idEntidade);
 }
