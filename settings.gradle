@@ -1,0 +1,4 @@
+rootProject.name = "pesagem-caminhao"
+
+include 'server-pesagem'
+include 'client-pesagem-balanca'

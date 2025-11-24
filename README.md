@@ -1,109 +1,172 @@
-# Desafio técnico backend
+# Pesagem de caminhões
 
-## Sobre o Projeto
-Uma empresa de transporte de grãos, com diversas filiais pelo Brasil, possui um parque
-de balanças para pesagem de caminhões carregados com grãos. Como parte da
-digitalização e otimização de seus processos, a empresa implementou um sistema baseado
-em ESP32, integrados a cada balança e com câmera LPR, responsáveis por enviar leituras
-de peso automaticamente para um servidor central da empresa.
+Sobre o projeto
+----------------
+Projeto backend em Java Spring Boot para receber leituras de balanças ESP32, estabilizar as leituras e registrar transações de transporte.
 
-Neste contexto, a empresa precisa receber, processar e armazenar os dados das balanças
-de modo eficiente e confiável, possibilitando calcular custos e identificar
-oportunidades de lucro no transporte de grãos.
+Estrutura do projeto
+-------------------------------------------------------
 
-O objetivo deste projeto é criar uma solução robusta para ingestão, estabilização e armazenamento
-das leituras de peso, conforme os requisitos descritos no desafio.
+```
+pesagem-caminhao/
+├─ README.md                          # Arquivo que você está lendo
+├─ settings.gradle
+├─ build/                              # Artefatos de build do workspace (reports, etc.)
+├─ gradle/                             # Gradle wrapper (configs)
+├─ client-pesagem-balanca/             # Cliente/CLI relacionado ao fluxo das balanças
+│  ├─ build.gradle
+│  ├─ gradlew
+│  ├─ gradlew.bat
+│  ├─ src/
+│  │  ├─ main/java/com/desafio/balanca/  # Código cliente (ex.: Simulador da balança)
+│  │  └─ resources/
+│  └─ build/                           # Artefatos gerados (jar, distribuições)
+└─ server-pesagem/                     # API e lógica do servidor (principal)
+	├─ build.gradle
+	├─ gradlew
+	├─ gradlew.bat
+	├─ src/
+	│  ├─ main/
+	│  │  ├─ java/com/desafio/pesagem/
+	│  │  │  ├─ entities/                # Entidades (Caminhao, Balanca, Filial, TipoGrao, ...)
+	│  │  │  ├─ repositories/            # Implementações JDBC (JdbcClient)
+	│  │  │  ├─ service/                 # Regras de negócio (PesagemService, etc.)
+	│  │  │  └─ controller/              # Controllers REST (endpoints)
+	│  │  └─ resources/
+	│  │     ├─ application.properties   # Configurações (DB, porta, etc.)
+	│  │     ├─ data.sql                 # Dados de exemplo (filial, balança, caminhao...)
+	│  │     └─ db/migration/            # Scripts de migração/seed (V1__, V2__, ...)
+	│  └─ test/                          # (se houver) testes unitários/integracao
+	└─ build/                            # Artefatos de build do módulo server
 
-## Desafio
-### 1. Cadastros
-Cadastros para armazenar:
-- Caminhão, Tipo de grão, Filial, Balança, Transação de transporte
-- Transação de transporte é a transação de compra e pesagem de grãos de um tipo para um caminhão, inicio e fim.
-
-### 2. Recepção dos Dados das Balanças
-Implemente um endpoint HTTP capaz de receber as requisições do ESP32 conforme o JSON
-acima (`plate`, `weight`). Considere que todas as balanças podem enviar dados
-simultaneamente.
-
-### 3. Persistência com Estabilização
-Salve os dados de pesagem **apenas quando o peso estiver estabilizado**. Elabore e
-descreva uma estratégia para identificar automaticamente o momento em que a balança
-está estabilizada.
+```
 
 ## Como Configurar
-### Pré-requisitos
-- Java JDK 24
-- Maven
-- MySQL
-- Docker
-- Postman
+### Requisitos
+- Java 17 ou superior
+- Docker Desktop (para PostgreSQL via Testcontainers)
+- Gradle 8.5 (incluído via Gradle Wrapper)
 
-### Instalação
-1. Clone o repositório: `git clone https://github.com/blbernat/desafio-tecnico-backend.git`
-2. Instale as dependências e rodar o projeto com o docker, conforme passo a passo do próximo tópico:
-3. Iniciar a aplicação manualmente via IDE rodando a classe main do Java `TransporteApplication`
-4. Acesse a aplicação em: http://localhost:8080/
-5. Acesse o banco de dados da aplicação em: http://localhost:8080/ com usuário e senha definidos no arquivo `application.properties`
+### Executar o servidor:
 
-### Docker
-* #### Para utilizar a aplicação via docker é necessário gerar o `.jar` da aplicação. Para isso faça os seguintes passos:
-1. Acessar o diretório `desafio-tecnico-backend/docker`
-2. Rodar o comando `docker-compose up` (caso queira acompanhar os logs) ou `docker-compose up -d`
-3. A aplicação estará rodando na porta http://localhost:8080
+**Pré-requisito:** Docker Desktop rodando
 
-* ####  Caso queira rodar a aplicação local e utilizar o banco via docker:
-1. Acessar o diretório `desafio-tecnico-backend/docker`
-2. Rodar o comando `docker compose -f docker-compose-mysql.yml up` (caso queira acompanhar os logs) ou `docker compose -f docker-compose-mysql.yml up -d`
-3. Iniciar a aplicação manualmente ou via IDE
+```bash
+cd weigh-hub
+./gradlew bootRun
+```
 
-## Descrição da arquitetura
-### Padrão MVC 
+Ou no Windows:
+```cmd
+cd weigh-hub
+gradlew.bat bootRun
+```
 
-#### Model
-Contém as entidades, DTOs e mapeamentos do banco. Representa os dados e regras básicas de validação.
-#### Repository
-Responsável por toda comunicação com o MySQL, utilizando Spring Data JPA ou JDBC Template. Neste projeto foi utilizado o JDBC.
-#### Service
-Centraliza as regras de negócio, como por exemplo os cálculos de tara, peso líquido e custo; estabilização de pesagem e validações das transações
-#### Controller
-Ela é responsável por mapear endpoints (REST), validar a entrada do usuário, acionar métodos da camada Service e retornar respostas padronizadas (ProblemDetail, DTOs, ResponseEntity)
+O Testcontainers irá iniciar automaticamente um container PostgreSQL. 
+Ao iniciar, a API fica disponível por padrão em http://localhost:8080 (verifique `application.properties` se a porta foi alterada).
 
-### Banco de Dados – MySQL
-O MySQL armazena todas as informações do sistema, incluindo caminhões, tipos de grão, filiais, balanças e transações de pesagem.
-A conexão usa variáveis de ambiente via Docker Compose.
+### Build:
 
-### Execução com Docker
-A aplicação roda totalmente em containers Docker:
+```bash
+cd weigh-hub
+./gradlew build
+```
 
-- App (Spring Boot): construído via Dockerfile com multi-stage build para gerar o JAR e executar na porta 8080.
-- MySQL: subido como container separado, com volume persistente para armazenar os dados.
-- Docker-compose: orquestra os serviços e garante que o Spring Boot só inicie após o MySQL estar disponível.
+### Endpoints
 
-## Documentação da API (Swagger)
-- Após iniciar o projeto, acesse a documentação Swagger em: http://localhost:8080/swagger-ui/index.html
+descrever endpoint !!
 
-## Testes com Collections do Postman
+### Executar o Simulador da Balança:
+```bash
+cd duo-weigh
+./gradlew run
+```
 
-Para verificar se a aplicação está rodando corretamente e ter acesso aos endpoints, utilize as Collections no Postman, conforme os seguintes passos:
-1. Salve num arquivo local o conteúdo do arquivo `collections`
-2. Abra o Postman via desktop ou pela web (https://www.postman.com/)
-3. Na aba "Collections", clique na opção "Import" e selecione o arquivo `.json` salvo no primeiro passo
-4. Cada endpoint possui testes válidos e inválidos que já estão prontos para serem executados!
+Ou no Windows:
+```cmd
+cd duo-weigh
+gradlew.bat run
+```
 
-## Sugestão de melhoria
-- Fazer o controle de versionamento. Este pode ser visualizado pela documentação no Swagger. Para melhor entendimento, leia o exemplo: https://dzone.com/articles/versioning-rest-api-with-spring-boot-and-swagger
-- Testes unitários
-- Deploy em nuvem
-- Fazer tratamentos de exception específicos (`ControllerExceptionHandler`)
+### Criar JAR executável:
 
-## Como Contribuir
-Contribuições são sempre bem-vindas! Veja como:
+```bash
+cd duo-weigh
+./gradlew fatJar
+```
 
-1. Fork o projeto
-2. Crie sua Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a Branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+JAR criado em: `build/libs/duo-weigh-1.0.0-all.jar`
 
-## Licença
-Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
+Executar:
+```bash
+java -jar build/libs/duo-weigh-1.0.0-all.jar
+```
+
+## Build de todos os projetos
+
+Da raiz do projeto:
+
+```bash
+./gradlew build
+```
+
+Ou no Windows:
+```cmd
+gradlew.bat build
+```
+
+## Como usar
+
+### Opção 1: Teste completo com interface Gráfica
+
+```bash
+# 1. Garantir que o Docker está rodando
+
+# 2. Terminal 1: Execute o server-pesagem (servidor)
+cd weigh-hub
+./gradlew bootRun
+
+# 3. Terminal 2: Execute o client-pesagem_balanca (simulador EPS32)
+cd duo-weigh
+./gradlew run
+```
+
+Preencha os campos na interface e clique em "Iniciar Pesagem"!
+
+### Opção 2: Teste via API (curl)
+
+```bash
+# 1. Execute o Weigh Hub
+cd weigh-hub
+./gradlew bootRun
+
+# 2. Teste a API
+curl -X POST http://localhost:8080/api/v1/weighing/records \
+  -H "Content-Type: application/json" \
+  -d '{"scaleId":"Balance_1","plate":"ABC1D34","weight":15000}'
+```
+
+## API e documentação
+- O projeto expõe endpoints REST para ingestão de leituras das balanças e consultas de transações.
+- Utlize o Swagger/OpenAPI para verificar a documentação e versionamento da API em : `http://localhost:8080/swagger-ui/index.html`.
+
+## Como contribuir
+
+1. Fork e clone o repositório.
+2. Crie uma branch de feature: `git checkout -b feature/minha-melhoria`.
+3. Faça commits pequenos e claros.
+4. Abra um Pull Request detalhando as mudanças.
+
+## Testes e qualidade
+
+Utilize o Collections do Postman para verificar os endpoints da aplicação (arquivo `collections.json`)
+
+## Sugestões de melhorias
+- Consolidar carregamento de relacionamentos para evitar múltiplas queries por entidade (usar JOIN ou JPA com fetch joins).
+- Cobrir a lógica de estabilização de peso com testes automatizados.
+- Utilizar o conceito de Arquitetura em Camadas (application, domain e infrastructure) para melhor organização e separação de código.
+- Fazer tratamentos de exception específicos (`ControllerExceptionHandler`). 
+- Cobrir mais regras de negócio e tratamento de erros.
+
+##Licença
+Projeto distribuído sob licença MIT (ver arquivo `LICENSE` se presente).

@@ -1,0 +1,212 @@
+2025-11-24 00:27:53.297 [Thread-3] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=BAL001, weight=14976.88
+2025-11-24 00:27:53.627 [Thread-3] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:27:53.582+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:30:53.462 [Thread-4] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=BAL001, weight=15022.54
+2025-11-24 00:30:53.481 [Thread-4] ERROR c.d.balanca.service.BalancaClient - Network error while sending weighing record
+java.net.ConnectException: Failed to connect to localhost/[0:0:0:0:0:0:0:1]:8080
+	at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:297)
+	at okhttp3.internal.connection.RealConnection.connect(RealConnection.kt:207)
+	at okhttp3.internal.connection.ExchangeFinder.findConnection(ExchangeFinder.kt:226)
+	at okhttp3.internal.connection.ExchangeFinder.findHealthyConnection(ExchangeFinder.kt:106)
+	at okhttp3.internal.connection.ExchangeFinder.find(ExchangeFinder.kt:74)
+	at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:255)
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+	at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154)
+	at com.desafio.balanca.service.BalancaClient.sendWeighingRecord(BalancaClient.java:49)
+	at com.desafio.balanca.controller.MainController.lambda$sendWeightToServer$3(MainController.java:127)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+	Suppressed: java.net.ConnectException: Failed to connect to localhost/127.0.0.1:8080
+		... 19 common frames omitted
+	Caused by: java.net.ConnectException: Connection refused: getsockopt
+		at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+		at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+		at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+		at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+		at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+		at java.base/java.net.Socket.connect(Socket.java:633)
+		at okhttp3.internal.platform.Platform.connectSocket(Platform.kt:128)
+		at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:295)
+		... 18 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at okhttp3.internal.platform.Platform.connectSocket(Platform.kt:128)
+	at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:295)
+	... 18 common frames omitted
+2025-11-24 00:31:20.174 [Thread-5] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=BAL001, weight=15026.00
+2025-11-24 00:31:47.491 [Thread-5] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:31:47.460+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:33:44.689 [Thread-6] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=BAL001, weight=14967.56
+2025-11-24 00:33:51.546 [Thread-6] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:33:51.512+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:34:10.006 [Thread-7] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=BAL001, weight=14946.72
+2025-11-24 00:34:40.025 [Thread-7] ERROR c.d.balanca.service.BalancaClient - Network error while sending weighing record
+java.net.SocketTimeoutException: timeout
+	at okio.SocketAsyncTimeout.newTimeoutException(JvmOkio.kt:146)
+	at okio.AsyncTimeout.access$newTimeoutException(AsyncTimeout.kt:161)
+	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:339)
+	at okio.RealBufferedSource.indexOf(RealBufferedSource.kt:430)
+	at okio.RealBufferedSource.readUtf8LineStrict(RealBufferedSource.kt:323)
+	at okhttp3.internal.http1.HeadersReader.readLine(HeadersReader.kt:29)
+	at okhttp3.internal.http1.Http1ExchangeCodec.readResponseHeaders(Http1ExchangeCodec.kt:180)
+	at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:110)
+	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:93)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+	at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154)
+	at com.desafio.balanca.service.BalancaClient.sendWeighingRecord(BalancaClient.java:49)
+	at com.desafio.balanca.controller.MainController.lambda$sendWeightToServer$3(MainController.java:127)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.net.SocketException: Socket closed
+	at java.base/sun.nio.ch.NioSocketImpl.endRead(NioSocketImpl.java:253)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:332)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:355)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:808)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
+	at okio.InputStreamSource.read(JvmOkio.kt:93)
+	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:128)
+	... 20 common frames omitted
+2025-11-24 00:35:17.197 [Thread-8] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=BAL001, weight=15000.60
+2025-11-24 00:35:47.212 [Thread-8] ERROR c.d.balanca.service.BalancaClient - Network error while sending weighing record
+java.net.SocketTimeoutException: timeout
+	at okio.SocketAsyncTimeout.newTimeoutException(JvmOkio.kt:146)
+	at okio.AsyncTimeout.access$newTimeoutException(AsyncTimeout.kt:161)
+	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:339)
+	at okio.RealBufferedSource.indexOf(RealBufferedSource.kt:430)
+	at okio.RealBufferedSource.readUtf8LineStrict(RealBufferedSource.kt:323)
+	at okhttp3.internal.http1.HeadersReader.readLine(HeadersReader.kt:29)
+	at okhttp3.internal.http1.Http1ExchangeCodec.readResponseHeaders(Http1ExchangeCodec.kt:180)
+	at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:110)
+	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:93)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+	at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154)
+	at com.desafio.balanca.service.BalancaClient.sendWeighingRecord(BalancaClient.java:49)
+	at com.desafio.balanca.controller.MainController.lambda$sendWeightToServer$3(MainController.java:127)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.net.SocketException: Socket closed
+	at java.base/sun.nio.ch.NioSocketImpl.endRead(NioSocketImpl.java:253)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:332)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:355)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:808)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
+	at okio.InputStreamSource.read(JvmOkio.kt:93)
+	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:128)
+	... 20 common frames omitted
+2025-11-24 00:36:32.521 [Thread-9] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=BAL001, weight=14961.67
+2025-11-24 00:36:34.289 [Thread-9] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:36:34.287+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:37:35.294 [Thread-10] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=BAL001, weight=15013.30
+2025-11-24 00:37:37.735 [Thread-10] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:37:37.734+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:38:22.463 [Thread-11] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=ABC1D23, weight=15001.90
+2025-11-24 00:38:25.218 [Thread-11] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:38:25.216+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:38:47.165 [Thread-12] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=ABC1D23, weight=14952.83
+2025-11-24 00:38:48.875 [Thread-12] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:38:48.873+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:39:07.161 [Thread-13] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=ABC1D23, weight=14970.77
+2025-11-24 00:39:29.496 [Thread-13] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:39:29.493+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:40:26.414 [Thread-14] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: scaleId=BAL001, plate=ABC1D23, weight=15021.87
+2025-11-24 00:40:48.234 [Thread-14] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:40:48.232+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:42:14.737 [Thread-3] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: id=BAL001, plate=ABC1D23, weight=15039.97
+2025-11-24 00:42:22.685 [Thread-3] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:42:22.633+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:42:55.898 [Thread-4] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: id=BAL001, plate=ABC1D23, weight=14999.93
+2025-11-24 00:43:25.909 [Thread-4] ERROR c.d.balanca.service.BalancaClient - Network error while sending weighing record
+java.net.SocketTimeoutException: timeout
+	at okio.SocketAsyncTimeout.newTimeoutException(JvmOkio.kt:146)
+	at okio.AsyncTimeout.access$newTimeoutException(AsyncTimeout.kt:161)
+	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:339)
+	at okio.RealBufferedSource.indexOf(RealBufferedSource.kt:430)
+	at okio.RealBufferedSource.readUtf8LineStrict(RealBufferedSource.kt:323)
+	at okhttp3.internal.http1.HeadersReader.readLine(HeadersReader.kt:29)
+	at okhttp3.internal.http1.Http1ExchangeCodec.readResponseHeaders(Http1ExchangeCodec.kt:180)
+	at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:110)
+	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:93)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+	at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154)
+	at com.desafio.balanca.service.BalancaClient.sendWeighingRecord(BalancaClient.java:49)
+	at com.desafio.balanca.controller.MainController.lambda$sendWeightToServer$3(MainController.java:127)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.net.SocketException: Socket closed
+	at java.base/sun.nio.ch.NioSocketImpl.endRead(NioSocketImpl.java:253)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:332)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:355)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:808)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
+	at okio.InputStreamSource.read(JvmOkio.kt:93)
+	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:128)
+	... 20 common frames omitted
+2025-11-24 00:44:03.276 [Thread-5] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: id=BAL001, plate=ABC1D23, weight=15003.13
+2025-11-24 00:44:07.605 [Thread-5] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:44:07.605+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 00:44:17.452 [Thread-6] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: id=BAL001, plate=ABC1D23, weight=15047.98
+2025-11-24 00:44:47.470 [Thread-6] ERROR c.d.balanca.service.BalancaClient - Network error while sending weighing record
+java.net.SocketTimeoutException: timeout
+	at okio.SocketAsyncTimeout.newTimeoutException(JvmOkio.kt:146)
+	at okio.AsyncTimeout.access$newTimeoutException(AsyncTimeout.kt:161)
+	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:339)
+	at okio.RealBufferedSource.indexOf(RealBufferedSource.kt:430)
+	at okio.RealBufferedSource.readUtf8LineStrict(RealBufferedSource.kt:323)
+	at okhttp3.internal.http1.HeadersReader.readLine(HeadersReader.kt:29)
+	at okhttp3.internal.http1.Http1ExchangeCodec.readResponseHeaders(Http1ExchangeCodec.kt:180)
+	at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:110)
+	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:93)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+	at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154)
+	at com.desafio.balanca.service.BalancaClient.sendWeighingRecord(BalancaClient.java:49)
+	at com.desafio.balanca.controller.MainController.lambda$sendWeightToServer$3(MainController.java:127)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.net.SocketException: Socket closed
+	at java.base/sun.nio.ch.NioSocketImpl.endRead(NioSocketImpl.java:253)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:332)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:355)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:808)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
+	at okio.InputStreamSource.read(JvmOkio.kt:93)
+	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:128)
+	... 20 common frames omitted
+2025-11-24 00:55:57.806 [Thread-7] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: id=BAL001, plate=ABC1D23, weight=14958.21
+2025-11-24 00:56:09.620 [Thread-7] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T03:56:09.589+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 01:02:27.850 [Thread-8] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: id=BAL001, plate=ABC1D2333, weight=14973.51
+2025-11-24 01:02:28.027 [Thread-8] ERROR c.d.balanca.service.BalancaClient - Failed to send weighing record. Status: 500, Error: {"timestamp":"2025-11-24T04:02:28.008+00:00","status":500,"error":"Internal Server Error","path":"/api/v1/pesagens"}
+2025-11-24 01:10:41.287 [Thread-3] INFO  c.d.balanca.service.BalancaClient - Sending weighing record: id=BAL001, plate=ABC1D23, weight=14970.91
+2025-11-24 01:11:07.433 [Thread-3] INFO  c.d.balanca.service.BalancaClient - Successfully sent weighing record. Response: 
